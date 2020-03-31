@@ -1,0 +1,61 @@
+{% extends "./base.html" %}
+{% block title %} DHAN Login {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Post</h1>
+
+    {% if form.errors %}
+
+    <div class="alert alert-danger" role="alert">
+        <p class="mb-0">Error!</p>
+    </div>
+    {% endif %}
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <label>Content</label>
+        {{ form.content }}
+
+        <label>Title</label>
+        {{ form.title }}
+
+        <label>Date</label>
+        {{ form.date }}
+
+        <label>Status</label>
+        {% for radio in form.status %}
+        <div class="form-check">
+            {{ radio }}
+        </div>
+        {% endfor %}
+
+        <input class="btn btn-dark" type="submit" value="Log">
+        <input type="hidden" name="next" value="{{ next }}">
+
+        {% comment %} TODO: Insert reCAPTCHA {% endcomment %}
+    </form>
+
+    <h2>Old Post</h2>
+
+    <div>
+        {% for record in old_records %}
+        <section class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{record.title}}</h5>
+                <p class="card-subtitle text-muted mb-2">
+                    <span>{{record.date}}</span>
+                    <span class>{{record.status | capfirst}}</span>
+                </p>
+                <p class="card-text">{{record.content}}</p>
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock%}
