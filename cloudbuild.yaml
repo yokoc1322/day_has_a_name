@@ -1,0 +1,24 @@
+steps:
+  - name: 'python:3.7.3'
+    entrypoint: 'python'
+    args: ['-m', 'venv', '/workspace/.venv']
+  - name: 'python:3.7.3'
+    entrypoint: '/workspace/.venv/bin/pip'
+    args: ['install', '-r', 'requirements.txt']
+    dir: 'day_has_a_name'
+  - name: 'python:3.7.3'
+    entrypoint: '/workspace/.venv/bin/python'
+    args: ['./manage.py', 'collectstatic', '--noinput']
+    env:
+      - 'DHAN_DB_SECRET_ID=db_django_password'
+      - 'DHAN_DB_SECRET_VERSION=1'
+      - 'DHAN_DB_USER=django'
+      - 'DHAN_DB_HOST=/cloudsql/day-has-a-name:asia-northeast1:day-has-a-name-mysql'
+      - 'DHAN_DB_NAME=day_has_a_name'
+      - 'DHAN_KEY_SECRET_ID=django_secret_key'
+      - 'DHAN_KEY_SECRET_VERSION=1'
+      - 'GOOGLE_CLOUD_PROJECT=day-has-a-name'
+    dir: 'day_has_a_name'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy']
+    dir: 'day_has_a_name'
