@@ -34,8 +34,9 @@ class WriteView(LoginRequiredMixin, generic.FormView):
         content = form.cleaned_data['content']
         title = form.cleaned_data['title']
         date = form.cleaned_data['date']
+        status = form.cleaned_data['status']
 
-        form.record(writer, content, title, date)
+        form.record(writer, content, title, date, status)
         return redirect(reverse_lazy('diary:index'))
 
     def get_context_data(self, **kwargs):

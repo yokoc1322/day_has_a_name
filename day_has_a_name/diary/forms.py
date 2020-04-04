@@ -26,7 +26,8 @@ class WriteForm(forms.Form):
                                    attrs={'class': 'form-check-input'})
                                )
 
-    def record(self, writer, content, title, date):
-        rc = Record(writer=writer, content=content, title=title, date=date)
+    def record(self, writer, content, title, date, status):
+        rc = Record(writer=writer, content=content,
+                    title=title, date=date, status=status)
         rc.save()
         return rc
