@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-from . import gcp
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = gcp.get_secret(
-    os.environ["GOOGLE_CLOUD_PROJECT"],
-    os.environ["DHAN_KEY_SECRET_ID"],
-    os.environ["DHAN_KEY_SECRET_VERSION"])
-# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = os.environ['DJANGO_SECRET']
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
@@ -76,46 +71,12 @@ WSGI_APPLICATION = 'day_has_a_name.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-db_name = os.environ["DHAN_DB_NAME"]
-db_user = os.environ["DHAN_DB_USER"]
-db_password = gcp.get_secret(
-    os.environ["GOOGLE_CLOUD_PROJECT"],
-    os.environ["DHAN_DB_SECRET_ID"],
-    os.environ["DHAN_DB_SECRET_VERSION"])
-db_host = os.environ["DHAN_DB_HOST"]
-
-# [START db_setup]
-if os.getenv('GAE_APPLICATION', None):
-    # Running on production App Engine, so connect to Google Cloud SQL using
-    # the unix socket at /cloudsql/<your-cloudsql-connection string>
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': db_host,
-            'USER': db_user,
-            'PASSWORD': db_password,
-            'NAME': db_name,
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-else:
-    # Running locally so connect to either a local MySQL instance or connect to
-    # Cloud SQL via the proxy. To start the proxy via command line:
-    #
-    #     $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
-    #
-    # See https://cloud.google.com/sql/docs/mysql-connect-proxy
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': db_name,
-            'USER': db_user,
-            'PASSWORD': db_password,
-        }
-    }
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -154,5 +115,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+django_heroku.settings(locals())

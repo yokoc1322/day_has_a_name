@@ -11,8 +11,8 @@ autopep8 = "*"
 
 [packages]
 django = "*"
-google-cloud-secret-manager = "*"
-mysqlclient = "*"
+gunicorn = "*"
+django-heroku = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
