@@ -41,7 +41,8 @@ class WriteView(LoginRequiredMixin, generic.FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["old_records"] = models.Record.objects.filter().order_by('-date')
+        context["old_records"] = models.Record.objects.filter(
+            writer=self.request.user).order_by('-date')
         return context
 
 
