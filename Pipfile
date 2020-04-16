@@ -8,11 +8,14 @@ pydocstyle = "*"
 pytest = "*"
 flake8 = "*"
 autopep8 = "*"
+httpie = "*"
 
 [packages]
 django = "*"
 gunicorn = "*"
 django-heroku = "*"
+django-rest-framework = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from rest_framework.authtoken.models import Token
+
 
 MAX_TITLE_LEN = 50
 MAX_CONTENT_LEN = 2000
@@ -10,6 +12,10 @@ MAX_STATUS_LEN = 20
 class Writer(AbstractUser):
     def get_absolute_url(self):
         return reverse("diary:writer-detail", kwargs={"pk": self.pk})
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        Token.objects.update_or_create(user=self)
 
 
 class Record(models.Model):

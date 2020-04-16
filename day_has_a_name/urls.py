@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework.authtoken.views import obtain_auth_token
 
 handler400 = 'diary.views.error_400'
 handler403 = 'diary.views.error_403'
@@ -23,5 +24,8 @@ handler500 = 'diary.views.error_500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('diary.urls'))
+    path('', include('diary.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-token-auth/', obtain_auth_token,
+         name='api_token_auth')
 ]
