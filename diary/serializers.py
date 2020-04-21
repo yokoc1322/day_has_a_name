@@ -10,7 +10,7 @@ class RecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        fields = ['writer', 'title', 'content', 'date', 'status']
+        fields = ['pk', 'writer', 'title', 'content', 'date', 'status']
 
 
 class LoginSerializesr(serializers.ModelSerializer):
