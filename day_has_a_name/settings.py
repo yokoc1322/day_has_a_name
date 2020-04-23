@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'diary.apps.DiaryConfig',
     'rest_framework',
     'rest_framework.authtoken',
-    'corsheaders'
+    'corsheaders',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
